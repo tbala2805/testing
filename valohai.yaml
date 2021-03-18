@@ -176,9 +176,8 @@
       - [convert-node.output.*, load-node.input.Label-Folder]
       - [load-node.output.tfrecords.zip, train-node.input.tfrecords]
       - [train-node.output.*, save-node.input.checkpoint-path]
-
 - pipeline:
-    name: TCSSample with deployment test
+    name: TCSSample with deployment
     nodes:
       - name: convert-node
         type: execution
@@ -198,16 +197,13 @@
         override: 
           inputs:
             - name: checkpoint-path
-      - name: deploy-node test
+      - name: deploy-node
         type: deployment
         deployment: test
         endpoints:
           - predict-deeplab
-     
     edges:
       - [convert-node.output.*, load-node.input.Label-Folder]
       - [load-node.output.tfrecords.zip, train-node.input.tfrecords]
       - [train-node.output.*, save-node.input.checkpoint-path]
       - [save-node.output.*.pb, deploy-node.file.predict-deeplab.model]
-     
-      
