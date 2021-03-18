@@ -172,10 +172,18 @@
         override: 
           inputs:
             - name: checkpoint-path
+      - name: test-node
+        type: execution
+        step: Save Frozen Graph
+        override: 
+          inputs:
+            - name: checkpoint-path
     edges:
       - [convert-node.output.*, load-node.input.Label-Folder]
       - [load-node.output.tfrecords.zip, train-node.input.tfrecords]
       - [train-node.output.*, save-node.input.checkpoint-path]
+      - [save-node.output.*, test-node.input.checkpoint-path]
+      
 - pipeline:
     name: TCSSample with deployment
     nodes:
