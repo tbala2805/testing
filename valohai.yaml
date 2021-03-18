@@ -172,15 +172,13 @@
         override: 
           inputs:
             - name: checkpoint-path
-     
     edges:
       - [convert-node.output.*, load-node.input.Label-Folder]
       - [load-node.output.tfrecords.zip, train-node.input.tfrecords]
       - [train-node.output.*, save-node.input.checkpoint-path]
-     
-      
+
 - pipeline:
-    name: TCSSample with deployment
+    name: TCSSample with deployment test
     nodes:
       - name: convert-node
         type: execution
@@ -205,41 +203,11 @@
         deployment: test
         endpoints:
           - predict-deeplab
+     
     edges:
       - [convert-node.output.*, load-node.input.Label-Folder]
       - [load-node.output.tfrecords.zip, train-node.input.tfrecords]
       - [train-node.output.*, save-node.input.checkpoint-path]
       - [save-node.output.*.pb, deploy-node.file.predict-deeplab.model]
+     
       
-  - pipeline:
-    name: testsample
-    nodes:
-      - name: convert-node
-        type: execution
-        step: Convert Mask to GrayScale
-      - name: load-node
-        type: execution
-        step: Load data and convert
-      - name: train-node
-        type: execution
-        step: Train DeepLab model
-        override:
-          inputs:
-            - name: tfrecords
-      - name: save-node
-        type: execution
-        step: Save Frozen Graph
-        override: 
-          inputs:
-            - name: checkpoint-path
-      - name: test-node
-        type: execution
-        step: Save Frozen Graph one more time
-        override: 
-          inputs:
-            - name: checkpoint-path
-    edges:
-      - [convert-node.output.*, load-node.input.Label-Folder]
-      - [load-node.output.tfrecords.zip, train-node.input.tfrecords]
-      - [train-node.output.*, save-node.input.checkpoint-path]
-      - [save-node.output.*, test-node.input.checkpoint-path]
