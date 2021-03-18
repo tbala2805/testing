@@ -198,7 +198,7 @@
         override: 
           inputs:
             - name: checkpoint-path
-      - name: deploy-node
+      - name: deploy-node test
         type: deployment
         deployment: test
         endpoints:
